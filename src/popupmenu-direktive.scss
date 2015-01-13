@@ -1,0 +1,70 @@
+popupmenu {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.popupmenu {
+  $triangle-color: #bababa;
+  position: relative;
+
+  &__trigger {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+  }
+
+  &__content {
+    box-sizing: border-box;
+    display: none;
+    overflow: visible;
+    position: absolute;
+    right: auto;
+    transition: all .5s ease-in;
+    z-index: 99;
+
+    &:after {
+      clear: both;
+      content: '';
+      display: table;
+    }
+  }
+
+  &__triangle {
+    border: 10px solid transparent;
+    box-sizing: border-box;
+    height: 10px;
+    position: absolute;
+    width: 10px;
+
+    &-- {
+      display: none;
+    }
+
+    &--sw {
+      border-top-color: $triangle-color;
+      bottom: -20px;
+      left: 10%;
+    }
+
+    &--se {
+      border-top-color: $triangle-color;
+      bottom: -20px;
+      right: 10%;
+    }
+
+    &--s {
+      border-top-color: $triangle-color;
+      bottom: -20px;
+      left: 50%;
+      margin-left: -10px;
+    }
+
+    &--n {
+      border-bottom-color: $triangle-color;
+      left: 50%;
+      margin-left: -10px;
+      top: -20px;
+    }
+  }
+}

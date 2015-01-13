@@ -1,0 +1,62 @@
+popupmenu {
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.popupmenu {
+  position: relative;
+}
+.popupmenu__trigger {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+}
+.popupmenu__content {
+  box-sizing: border-box;
+  display: none;
+  overflow: visible;
+  position: absolute;
+  right: auto;
+  transition: all .5s ease-in;
+  z-index: 99;
+}
+.popupmenu__content:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+.popupmenu__triangle {
+  border: 10px solid transparent;
+  box-sizing: border-box;
+  height: 10px;
+  position: absolute;
+  width: 10px;
+}
+.popupmenu__triangle-- {
+  display: none;
+}
+.popupmenu__triangle--sw {
+  border-top-color: #bababa;
+  bottom: -20px;
+  left: 10%;
+}
+.popupmenu__triangle--se {
+  border-top-color: #bababa;
+  bottom: -20px;
+  right: 10%;
+}
+.popupmenu__triangle--s {
+  border-top-color: #bababa;
+  bottom: -20px;
+  left: 50%;
+  margin-left: -10px;
+}
+.popupmenu__triangle--n {
+  border-bottom-color: #bababa;
+  left: 50%;
+  margin-left: -10px;
+  top: -20px;
+}
+
+/*# sourceMappingURL=popupmenu-direktive.css.map */
