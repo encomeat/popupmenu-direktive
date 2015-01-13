@@ -1,12 +1,12 @@
 {
   "name": "popupmenu-direktive",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/popupmenu-direktive.js",
   "dependencies": {},
   "devDependencies": {
     "angular": "latest",
     "angular-mocks": "latest"
   },
-  "_target": "~0.0.2",
+  "_target": "~0.0.3",
   "_originalSource": "popupmenu-direktive"
 }
