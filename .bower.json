@@ -1,12 +1,12 @@
 {
-  "name": "ng-highchartsservice",
+  "name": "popupmenu-direktive",
   "version": "0.0.1",
-  "main": "dist/ng-highchartsservice.js",
+  "main": "dist/popupmenu-direktive.js",
   "dependencies": {},
   "devDependencies": {
     "angular": "latest",
     "angular-mocks": "latest"
   },
   "_target": "~0.0.1",
-  "_originalSource": "ng-highchartsservice"
+  "_originalSource": "popupmenu-direktive"
 }
