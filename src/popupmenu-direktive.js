@@ -24,7 +24,7 @@
  *
  *  Note that foobar and foobarbaz are not required but show you the possibility to style your popup and its trigger.
  */
-angular.module('tpl.popupmenu').directive('popupmenu', ['$timeout',
+angular.module('tpl.popupmenu', []).directive('popupmenu', ['$timeout',
   function popupmenu($timeout) {
     'use strict';
 
