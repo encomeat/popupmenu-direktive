@@ -25,7 +25,8 @@
  *  Note that foobar and foobarbaz are not required but show you the possibility to style your popup and its trigger.
  */
 angular.module('tpl.popupmenu', []).directive('popupmenu', [
-  '$timeout', '$window',
+  '$timeout',
+  '$window',
   function popupmenu($timeout, $window) {
     'use strict';
     var $triangle = document.createElement('div');
@@ -38,7 +39,6 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
         closeTimeout: 300
       },
       POPUPMENU_TIMEOUT = 'popupMenuTimeout';
-
     var generateCss = function(attrs) {
       attrs.offsetHorizontal = attrs.offsetHorizontal || 0;
       attrs.offsetVertical = attrs.offsetVertical || 0;
@@ -87,11 +87,9 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       if ($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT)) {
         $timeout.cancel($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT));
       }
-
       for (var cssKey in css) {
         $content[0].style[cssKey] = css[cssKey];
       }
-
       $content[0].style.display = 'block';
     };
     var hidePopupmenu = function($content, closeTimeout) {
@@ -123,10 +121,10 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           element.on('mouseleave', function() {
             hidePopupmenu($content, attrs.closeTimeout);
           });
-          $content.on('mouseleave', function() {
+          element.on('mouseleave', function() {
             hidePopupmenu($content, attrs.closeTimeout);
           });
-          $content.on('mouseover', function() {
+          element.on('mouseover', function() {
             showPopupmenu($content, contentCss);
           });
         }
