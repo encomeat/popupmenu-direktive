@@ -8,7 +8,7 @@
  * offsetHorizontal: int (px)
  * width: int (px)
  * placement: 'none' | 'sw' | 'nw' | 'n' | 's'
- * toggle: 'hover' | 'both'
+ * toggle: 'hover' | 'click' | 'both'
  * closeTimeout: int (milliseconds)
  * offsetVertical: int (px)
  * triangle: true | false
@@ -24,10 +24,12 @@
  *
  *  Note that foobar and foobarbaz are not required but show you the possibility to style your popup and its trigger.
  */
-angular.module('tpl.popupmenu', []).directive('popupmenu', ['$timeout',
-  function popupmenu($timeout) {
+angular.module('tpl.popupmenu', []).directive('popupmenu', [
+  '$timeout', '$window',
+  function popupmenu($timeout, $window) {
     'use strict';
-
+    var $triangle = document.createElement('div');
+    $triangle.className = 'popupmenu__triangle';
     var DEFAULT_OPTIONS = {
         offsetHorizontal: 30,
         width: 200,
@@ -35,34 +37,27 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', ['$timeout',
         toggle: 'hover',
         closeTimeout: 300
       },
-      POPUPMENU_TIMEOUT = 'popupMenuTimeout',
-      $triangle = $('<div class="popupmenu__triangle" />');
+      POPUPMENU_TIMEOUT = 'popupMenuTimeout';
 
     var generateCss = function(attrs) {
       attrs.offsetHorizontal = attrs.offsetHorizontal || 0;
       attrs.offsetVertical = attrs.offsetVertical || 0;
-
       var offsetHorizontal = parseInt(attrs.offsetHorizontal, 10),
         offsetVertical = parseInt(attrs.offsetVertical, 10),
         width = parseInt(attrs.width, 10);
-
       var basePositioning = {
         left: -width / 2 + 'px',
         'margin-left': offsetHorizontal + 'px'
       };
-
       var configSouth = {
-        'bottom': offsetVertical + 'px',
+        'bottom': offsetVertical + 'px'
       };
-
       var configNorth = {
-        'top': offsetVertical + 'px',
+        'top': offsetVertical + 'px'
       };
-
       if (width) {
         basePositioning.width = width + 'px';
       }
-
       switch (attrs.placement) {
         case 'none':
           return {};
@@ -79,51 +74,47 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', ['$timeout',
         case 'ne':
           return angular.extend({}, configNorth, basePositioning);
       }
-
       return basePositioning;
     };
-
     var togglePopupmenu = function($content, css, options) {
-      if ($content.css('display') !== 'block') {
+      if ($window.getComputedStyle($content[0], null).getPropertyValue('display') !== 'block') {
         showPopupmenu($content, css);
       } else {
         hidePopupmenu($content, options.closeTimeout);
       }
     };
-
     var showPopupmenu = function($content, css) {
-      if ($content.data(POPUPMENU_TIMEOUT)) {
-        $timeout.cancel($content.data(POPUPMENU_TIMEOUT));
+      if ($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT)) {
+        $timeout.cancel($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT));
       }
-      $content.css('display', 'block').css(css);
-    };
 
+      for (var cssKey in css) {
+        $content[0].style[cssKey] = css[cssKey];
+      }
+
+      $content[0].style.display = 'block';
+    };
     var hidePopupmenu = function($content, closeTimeout) {
-      $content.data(POPUPMENU_TIMEOUT, $timeout(function() {
-        $content.css({
-          'display': 'none'
-        });
+      $content[0].setAttribute('data-' + POPUPMENU_TIMEOUT, $timeout(function() {
+        $content[0].style.display = 'none';
       }, closeTimeout));
     };
-
     return {
       restrict: 'E',
       transclude: true,
       template: '<div class="popupmenu" ng-transclude></div>',
       link: function(scope, element, attrs) {
-        var $content = $('.popupmenu__content:first', element);
+        var $content = element[0].getElementsByClassName('popupmenu__content');
         // create options
         attrs = angular.extend(DEFAULT_OPTIONS, attrs);
-
         // add triangle and add the given placement string as element-modifier
         if (attrs.triangle && (!!attrs.placement && attrs.placement !== 'none')) {
           var triangleClone = $triangle.clone();
           triangleClone.addClass('popupmenu__triangle--' + attrs.placement);
           $content.append(triangleClone);
         }
-
         // generate css for this directive and hold in scope
-        var contentCss = generateCss(attrs, $('.popupmenu__trigger', element));
+        var contentCss = generateCss(attrs, element[0].getElementsByClassName('popupmenu__trigger'));
         // bind toggle events
         if (attrs.toggle === 'hover' || attrs.toggle === 'both') {
           element.on('mouseover', function() {
@@ -139,7 +130,6 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', ['$timeout',
             showPopupmenu($content, contentCss);
           });
         }
-
         if (attrs.toggle === 'click' || attrs.toggle === 'both') {
           element.on('click', function() {
             togglePopupmenu($content, contentCss, attrs);
