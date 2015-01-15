@@ -29,7 +29,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
   '$window',
   function popupmenu($timeout, $window) {
     'use strict';
-    var $triangle = document.createElement('div');
+    var $triangle = $window.document.createElement('div');
     $triangle.className = 'popupmenu__triangle';
     var DEFAULT_OPTIONS = {
         offsetHorizontal: 30,
@@ -95,7 +95,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       transclude: true,
       template: '<div class="popupmenu" ng-transclude></div>',
       link: function (scope, element, attrs) {
-        var $content = element[0].getElementsByClassName('popupmenu__content');
+        var $content = angular.element(element[0].getElementsByClassName('popupmenu__content'));
         // create options
         attrs = angular.extend(DEFAULT_OPTIONS, attrs);
         // add triangle and add the given placement string as element-modifier
@@ -112,13 +112,13 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
             showPopupmenu($content, contentCss);
           });
           element.on('mouseleave', function () {
-            hidePopupmenu($content, attrs.closeTimeout);
-          });
-          element.on('mouseleave', function () {
-            hidePopupmenu($content, attrs.closeTimeout);
-          });
-          element.on('mouseover', function () {
             showPopupmenu($content, contentCss);
+          });
+          $content.on('mouseover', function () {
+            showPopupmenu($content, contentCss);
+          });
+          $content.on('mouseleave', function () {
+            hidePopupmenu($content, attrs.closeTimeout);
           });
         }
         if (attrs.toggle === 'click' || attrs.toggle === 'both') {
