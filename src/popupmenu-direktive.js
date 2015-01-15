@@ -25,8 +25,8 @@
  *  Note that foobar and foobarbaz are not required but show you the possibility to style your popup and its trigger.
  */
 angular.module('tpl.popupmenu', []).directive('popupmenu', [
-  '$timeout',
-  function popupmenu($timeout) {
+  '$timeout', '$window',
+  function popupmenu($timeout, $window) {
     'use strict';
     var $triangle = document.createElement('div');
     $triangle.className = 'popupmenu__triangle';
@@ -37,7 +37,8 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
         toggle: 'hover',
         closeTimeout: 300
       },
-      POPUPMENU_TIMEOUT = 'popupMenuTimeout'; //, $triangle = $('<div class="popupmenu__triangle" />');
+      POPUPMENU_TIMEOUT = 'popupMenuTimeout';
+
     var generateCss = function(attrs) {
       attrs.offsetHorizontal = attrs.offsetHorizontal || 0;
       attrs.offsetVertical = attrs.offsetVertical || 0;
@@ -76,7 +77,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       return basePositioning;
     };
     var togglePopupmenu = function($content, css, options) {
-      if (window.getComputedStyle($content[0], null).getPropertyValue('display') !== 'block') {
+      if ($window.getComputedStyle($content[0], null).getPropertyValue('display') !== 'block') {
         showPopupmenu($content, css);
       } else {
         hidePopupmenu($content, options.closeTimeout);
@@ -86,10 +87,11 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       if ($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT)) {
         $timeout.cancel($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT));
       }
-      //var cssKeys = Object.keys(css);
+
       for (var cssKey in css) {
         $content[0].style[cssKey] = css[cssKey];
       }
+
       $content[0].style.display = 'block';
     };
     var hidePopupmenu = function($content, closeTimeout) {
