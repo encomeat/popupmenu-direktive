@@ -112,7 +112,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
             showPopupmenu($content, contentCss);
           });
           element.on('mouseleave', function () {
-            showPopupmenu($content, contentCss);
+            hidePopupmenu($content, contentCss);
           });
           $content.on('mouseover', function () {
             showPopupmenu($content, contentCss);

@@ -137,7 +137,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           });
 
           element.on('mouseleave', function() {
-            showPopupmenu($content, contentCss);
+            hidePopupmenu($content, contentCss);
           });
 
           $content.on('mouseover', function() {
