@@ -97,7 +97,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       link: function (scope, element, attrs) {
         var $content = angular.element(element[0].getElementsByClassName('popupmenu__content'));
         // create options
-        attrs = angular.extend(DEFAULT_OPTIONS, attrs);
+        attrs = angular.extend({}, DEFAULT_OPTIONS, attrs);
         // add triangle and add the given placement string as element-modifier
         if (attrs.triangle && (!!attrs.placement && attrs.placement !== 'none')) {
           var triangleClone = $triangle.clone();
@@ -111,14 +111,8 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           element.on('mouseover', function () {
             showPopupmenu($content, contentCss);
           });
-          element.on('mouseleave', function () {
-            hidePopupmenu($content, contentCss);
-          });
           $content.on('mouseover', function () {
             showPopupmenu($content, contentCss);
-          });
-          $content.on('mouseleave', function () {
-            hidePopupmenu($content, attrs.closeTimeout);
           });
         }
         if (attrs.toggle === 'click' || attrs.toggle === 'both') {
@@ -126,6 +120,12 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
             togglePopupmenu($content, contentCss, attrs);
           });
         }
+        $content.on('mouseleave', function () {
+          hidePopupmenu($content, attrs.closeTimeout);
+        });
+        element.on('mouseleave', function () {
+          hidePopupmenu($content, contentCss);
+        });
       }
     };
   }

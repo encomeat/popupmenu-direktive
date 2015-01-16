@@ -1,6 +1,6 @@
 {
   "name": "popupmenu-direktive",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "main": [
     "dist/popupmenu-direktive.js",
     "dist/popupmenu-direktive.css"
