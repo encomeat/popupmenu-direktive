@@ -12,6 +12,7 @@
  * closeTimeout: int (milliseconds)
  * offsetVertical: int (px)
  * triangle: true | false
+ * hideonleave : true | false
  *
  * @example
  *
@@ -36,6 +37,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
         width: 200,
         placement: 'none',
         toggle: 'hover',
+        hideonleave: 'true',
         closeTimeout: 300
       }, POPUPMENU_TIMEOUT = 'popupMenuTimeout';
     var generateCss = function (attrs) {
@@ -125,6 +127,11 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           element.on('click', function () {
             togglePopupmenu($content, contentCss, attrs);
           });
+          if (attrs.hideonleave === 'true') {
+            element.on('mouseleave', function () {
+              hidePopupmenu($content, contentCss);
+            });
+          }
         }
       }
     };
