@@ -147,12 +147,13 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           });
         }
 
-          $content.on('mouseleave', function() {
-            hidePopupmenu($content, attrs.closeTimeout);
-          });
-          element.on('mouseleave', function() {
-            hidePopupmenu($content, contentCss);
-          });
+        $content.on('mouseleave', function() {
+          hidePopupmenu($content, attrs.closeTimeout);
+        });
+
+        element.on('mouseleave', function() {
+          hidePopupmenu($content, attrs.closeTimeout);
+        });
 
 
       }
