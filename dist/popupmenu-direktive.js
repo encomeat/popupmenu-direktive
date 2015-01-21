@@ -29,8 +29,8 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
   '$window',
   function popupmenu($timeout, $window) {
     'use strict';
-    var $triangle = $window.document.createElement('div');
-    $triangle.className = 'popupmenu__triangle';
+    var $triangle = angular.element($window.document.createElement('div'));
+    $triangle.addClass('popupmenu__triangle');
     var DEFAULT_OPTIONS = {
         offsetHorizontal: 30,
         width: 200,
@@ -77,17 +77,17 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
       }
     };
     var showPopupmenu = function ($content, css) {
-      if ($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT)) {
-        $timeout.cancel($content[0].getAttribute('data-' + POPUPMENU_TIMEOUT));
+      if ($content.data(POPUPMENU_TIMEOUT)) {
+        $timeout.cancel($content.data(POPUPMENU_TIMEOUT));
       }
       for (var cssKey in css) {
-        $content[0].style[cssKey] = css[cssKey];
+        $content.css(cssKey, css[cssKey]);
       }
-      $content[0].style.display = 'block';
+      $content.css('display', 'block');
     };
     var hidePopupmenu = function ($content, closeTimeout) {
-      $content[0].setAttribute('data-' + POPUPMENU_TIMEOUT, $timeout(function () {
-        $content[0].style.display = 'none';
+      $content.data(POPUPMENU_TIMEOUT, $timeout(function () {
+        $content.css('display', 'none');
       }, closeTimeout));
     };
     return {
@@ -105,7 +105,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           $content.append(triangleClone);
         }
         // generate css for this directive and hold in scope
-        var contentCss = generateCss(attrs, element[0].getElementsByClassName('popupmenu__trigger'));
+        var contentCss = generateCss(attrs, angular.element(element[0].getElementsByClassName('popupmenu__trigger')[0]));
         // bind toggle events
         if (attrs.toggle === 'hover' || attrs.toggle === 'both') {
           element.on('mouseover', function () {
@@ -124,7 +124,7 @@ angular.module('tpl.popupmenu', []).directive('popupmenu', [
           hidePopupmenu($content, attrs.closeTimeout);
         });
         element.on('mouseleave', function () {
-          hidePopupmenu($content, contentCss);
+          hidePopupmenu($content, attrs.closeTimeout);
         });
       }
     };
